@@ -19,40 +19,45 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
 import { auth, db, provider } from 'src/firebase/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
-
-
 // ----------------------------------------------------------------------
 
-export default function LoginView() {
+export default function RegisterView() {
   const theme = useTheme();
 
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [name, setName] = useState("");
+  const [regEmail, setEmail] = useState("");
+  const [regPassword, setPassword] = useState("");
 
   const handleClick = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      toast.success("Login Successfully.", {
+      const res = await createUserWithEmailAndPassword(auth, regEmail, regPassword)
+      await updateProfile(res.user, {
+        displayName: name,
+      });
+      await setDoc(doc(db, "users", res.user.uid), {
+        uid: res.user.uid,
+        displayName: name,
+        email: regEmail,
+        password: regPassword,
+        role: "User",
+      })
+      toast.success("Registered Successfully.", {
         position: "top-right",
         autoClose: 3000, // Automatically close the toast after 3 seconds
         hideProgressBar: false,
       });
       router.push('/app')
     } catch(err) {
-      toast.error("Something went wrong!.", {
-        position: "top-right",
-        autoClose: 3000, // Automatically close the toast after 3 seconds
-        hideProgressBar: false,
-      });
-      console.error(err)
+      console.error(err);
     }
+    
   };
 
   const signInWithGoogle = async () => {
@@ -61,7 +66,7 @@ export default function LoginView() {
       const user = auth.currentUser;
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
-        displayName: user.displayName,
+        displayname: user.displayName,
         email: user.email,
         role: "User"
       })
@@ -84,12 +89,13 @@ export default function LoginView() {
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
+        <TextField name="fname" label="Full Name" onChange={(e) => setName(e.target.value)}/>
+        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)}/>
 
         <TextField
           name="password"
           label="Password"
-          onChange={(e) => setPassword(e.target.value)} 
+          onChange={(e) => setPassword(e.target.value)}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -103,11 +109,6 @@ export default function LoginView() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover" >
-          Forgot password?
-        </Link>
-      </Stack>
 
       <LoadingButton
         fullWidth
@@ -116,8 +117,9 @@ export default function LoginView() {
         variant="contained"
         color="inherit"
         onClick={handleClick}
+        style={{ marginTop: '20px' }}
       >
-        Login
+        Sign Up
       </LoadingButton>
     </>
   );
@@ -151,9 +153,9 @@ export default function LoginView() {
           <Typography variant="h4">Sign in to NDWBIS</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link onClick={() => router.push('/register')} variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
+            Already have an account?
+            <Link onClick={() => router.push('/login')} variant="subtitle2" sx={{ ml: 0.5 }}>
+              Sign In
             </Link>
           </Typography>
 

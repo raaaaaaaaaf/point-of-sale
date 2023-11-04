@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -15,13 +15,12 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { account } from 'src/_mock/account';
-
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import { AuthContext } from 'src/context/AuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +28,8 @@ export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
+
+  const { currentUser, userData, loading } = useContext(AuthContext);
 
   useEffect(() => {
     if (openNav) {
@@ -50,15 +51,21 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      {loading ? (
+        <div>...</div>
+      ) : (
+        <>
+          <Avatar src={currentUser.photoURL} alt="photoURL" />
 
-      <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+          <Box sx={{ ml: 2 }}>
+            <Typography variant="subtitle2">{userData.displayName}</Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
-        </Typography>
-      </Box>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Admin
+            </Typography>
+          </Box>
+        </>
+      )}
     </Box>
   );
 
