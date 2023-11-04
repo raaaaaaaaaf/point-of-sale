@@ -1,0 +1,9 @@
+/* CSS */
+.scanner-container {
+    width: 100%;
+    max-width: 500px; /* You can adjust the maximum width as needed */
+    margin: 0 auto;
+    height: 100%;
+    max-height: 500px; /* You can adjust the maximum height as needed */
+  }
+  

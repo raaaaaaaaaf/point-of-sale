@@ -14,6 +14,8 @@ import { ColorPreview } from 'src/components/color-utils';
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard({ product }) {
+  const { id, description, imageUrl, price, quantity, productName } = product;
+
   const renderStatus = (
     <Label
       variant="filled"
@@ -33,8 +35,8 @@ export default function ShopProductCard({ product }) {
   const renderImg = (
     <Box
       component="img"
-      alt={product.name}
-      src={product.cover}
+      alt={productName}
+      src={imageUrl}
       sx={{
         top: 0,
         width: 1,
@@ -47,36 +49,37 @@ export default function ShopProductCard({ product }) {
 
   const renderPrice = (
     <Typography variant="subtitle1">
+      ₱{fCurrency(price)}
+      &nbsp;
       <Typography
         component="span"
         variant="body1"
         sx={{
-          color: 'text.disabled',
-          textDecoration: 'line-through',
+          color: 'text.disabled'
         }}
       >
-        {product.priceSale && fCurrency(product.priceSale)}
+        {quantity} left
       </Typography>
-      &nbsp;
-      {fCurrency(product.price)}
+      
+      
     </Typography>
   );
 
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {product.status && renderStatus}
+        {/* {product.status && renderStatus} */}
 
         {renderImg}
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link color="inherit" underline="hover" variant="subtitle2" noWrap>
-          {product.name}
+          {productName}
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={product.colors} />
+          {/* <ColorPreview colors={product.colors} /> */}
           {renderPrice}
         </Stack>
       </Stack>
