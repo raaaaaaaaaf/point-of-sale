@@ -10,11 +10,34 @@ import { fCurrency } from 'src/utils/format-number';
 
 import Label from 'src/components/label';
 import { ColorPreview } from 'src/components/color-utils';
+import { IconButton } from '@mui/material';
+import Iconify from 'src/components/iconify';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from 'src/firebase/firebaseConfig';
+import EditModal from 'src/components/modal/EditModal';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard({ product }) {
   const { id, description, imageUrl, price, quantity, productName } = product;
+
+  const [open, setOpen] = useState(false)
+
+  const handleDelete = async (id) => {
+    try {
+      const dataRef = doc(db, "data_products", id)
+      await deleteDoc(dataRef)
+      toast.success("Product removed", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+      });
+    } catch(err) {
+      console.error(err);
+    }
+  }
 
   const renderStatus = (
     <Label
@@ -58,17 +81,41 @@ export default function ShopProductCard({ product }) {
           color: 'text.disabled'
         }}
       >
-        {quantity} left
+        {quantity} stock
       </Typography>
       
       
     </Typography>
   );
 
+  const editDelete = (
+    <Link
+    color="inherit"
+    sx={{
+      position: 'absolute',
+      top: '8px', // You can adjust the positioning as needed
+      right: '8px', // You can adjust the positioning as needed
+      zIndex: 1,
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    }}
+  >
+    <IconButton onClick={() => setOpen(true)} size="small" color="inherit">
+      <Iconify icon={'eva:edit-fill'} />
+    </IconButton>
+    <IconButton onClick={() => handleDelete(id)} size="small" sx={{ color: 'error.main' }}>
+      <Iconify icon={'eva:trash-2-outline'} />
+    </IconButton>
+    <EditModal open={open} onClose={()=> setOpen(false)} id={id} data={product}/>
+  </Link>
+  )
+
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {/* {product.status && renderStatus} */}
+        {editDelete}
 
         {renderImg}
       </Box>

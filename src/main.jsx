@@ -5,6 +5,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import App from './app';
 import { AuthContextProvider } from './context/AuthContext';
+import { AddtoCartProvider } from './context/AddtoCartContext';
 
 // ----------------------------------------------------------------------
 
@@ -13,11 +14,13 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <HelmetProvider>
     <AuthContextProvider>
-      <BrowserRouter>
-        <Suspense>
-          <App />
-        </Suspense>
-      </BrowserRouter>
+      <AddtoCartProvider>
+        <BrowserRouter>
+          <Suspense>
+            <App />
+          </Suspense>
+        </BrowserRouter>
+      </AddtoCartProvider>
     </AuthContextProvider>
   </HelmetProvider>
 );

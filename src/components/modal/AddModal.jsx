@@ -27,7 +27,7 @@ const AddModal = ({ open, onClose }) => {
     productName: '',
     description: '',
     price: 0,
-    quantity: 0,
+    stock: 0,
   });
 
   const handleInputChange = (e) => {
@@ -77,7 +77,7 @@ const AddModal = ({ open, onClose }) => {
               description: formData.description,
               price: formData.price,
               productName: formData.productName,
-              quantity: formData.quantity,
+              stock: formData.stock,
               imageUrl: downloadURL, // Save the download URL
             };
             const docRef = await addDoc(dataRef, newProduct);
@@ -146,11 +146,11 @@ const AddModal = ({ open, onClose }) => {
               <TextField
                 margin="dense"
                 required
-                id="quantity"
-                name="quantity"
-                value={formData.quantity}
+                id="stock"
+                name="stock"
+                value={formData.stock}
                 onChange={handleInputChange}
-                label="Quantity"
+                label="Stock"
                 variant="outlined"
                 fullWidth
                 type="number"

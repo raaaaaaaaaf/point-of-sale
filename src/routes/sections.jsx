@@ -1,7 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useContext, useEffect, useState } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
+import Loader from 'src/components/loader/Loader';
+import { AuthContext } from 'src/context/AuthContext';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import CartPage from 'src/pages/cart';
 import RegisterPage from 'src/pages/register';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -14,6 +17,36 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
+
+  const {currentUser, loading} = useContext(AuthContext)
+
+  const ProtectedRoute = ({children}) => {
+    const [timedOute, setTimedOut] = useState(false)
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        setTimedOut(true);
+      }, 2000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      }
+    }, [])
+
+    if (loading) {
+      if (timedOute) {
+        // Redirect to login page if loading takes too long
+        return <Navigate to="/login" replace />;
+      } else {
+        return <Loader/>
+      }
+    }
+    if(!currentUser) {
+      return <Navigate to='/login'/>
+    }
+    return children
+  }
+
   const routes = useRoutes([
     {
       element: (
@@ -24,10 +57,12 @@ export default function Router() {
         </DashboardLayout>
       ),
       children: [
-        { element: <IndexPage />, index: true },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        { element:<ProtectedRoute><IndexPage /></ProtectedRoute> , index: true },
+        { path: 'app', element: <ProtectedRoute><IndexPage /></ProtectedRoute>  },
+        { path: 'user', element: <ProtectedRoute><UserPage /></ProtectedRoute>  },
+        { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
+        { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute> },
+        { path: 'cart', element: <ProtectedRoute><CartPage /></ProtectedRoute> },
       ],
     },
     {
