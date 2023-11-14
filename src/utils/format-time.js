@@ -8,10 +8,18 @@ export function fDate(date, newFormat) {
   return date ? format(new Date(date), fm) : '';
 }
 
-export function fDateTime(date, newFormat) {
+export function fDateTime(timestamp, newFormat) {
   const fm = newFormat || 'dd MMM yyyy p';
 
-  return date ? format(new Date(date), fm) : '';
+  if (timestamp && timestamp.seconds) {
+    // Convert Firebase timestamp to JavaScript Date
+    const jsDate = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
+    
+    // Format the JavaScript Date object
+    return format(jsDate, fm);
+  } else {
+    return '';
+  }
 }
 
 export function fTimestamp(date) {

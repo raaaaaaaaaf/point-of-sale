@@ -1,6 +1,7 @@
 import { lazy, Suspense, useContext, useEffect, useState } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import Loader from 'src/components/loader/Loader';
+import Receipt from 'src/components/modal/Receipt';
 import { AuthContext } from 'src/context/AuthContext';
 
 import DashboardLayout from 'src/layouts/dashboard';
@@ -63,6 +64,7 @@ export default function Router() {
         { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
         { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute> },
         { path: 'cart', element: <ProtectedRoute><CartPage /></ProtectedRoute> },
+        { path: 'cart/receipt/:id', element: <ProtectedRoute><Receipt /></ProtectedRoute> },
       ],
     },
     {

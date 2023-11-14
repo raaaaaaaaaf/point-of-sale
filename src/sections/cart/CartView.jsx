@@ -17,6 +17,7 @@ import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import { toast } from 'react-toastify';
 import Iconify from 'src/components/iconify';
 import Barcode from 'src/components/modal/Barcode';
+import CheckOutModal from 'src/components/modal/CheckOutModal';
 import { AddtoCartContext } from 'src/context/AddtoCartContext';
 import { AuthContext } from 'src/context/AuthContext';
 import { db } from 'src/firebase/firebaseConfig';
@@ -24,6 +25,7 @@ import { fCurrency } from 'src/utils/format-number';
 
 export default function CartView() {
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
   const [cart, setCart] = useState([]);
   const [product, setProduct] = useState([]);
   const [scannedData, setScannedData] = useState('Not found');
@@ -269,7 +271,7 @@ export default function CartView() {
           {cart.length > 0 ? (
             <Card style={{ borderRadius: '0.25rem', marginBottom: '1rem' }}>
               <Button
-                onClick={handleAddToCart}
+                onClick={() => setModalOpen(true)}
                 className="ms-3"
                 color="warning"
                 variant="contained"
@@ -286,6 +288,7 @@ export default function CartView() {
               </CardContent>
             </Card>
           )}
+          <CheckOutModal isOpen={modalOpen} onClose={() => setModalOpen(false)} items={cart}/>
         </Grid>
       </Grid>
     </Container>
