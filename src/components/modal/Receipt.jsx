@@ -1,4 +1,13 @@
-import { Button, Card, CardContent, Container, Divider, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -50,13 +59,13 @@ const Receipt = () => {
           // to the root node of the returned component as it will be overwritten.
           return (
             <Button
-            onClick={() => setOpen(true)}
-            variant="contained"
-            color="inherit"
-            startIcon={<Iconify icon="material-symbols:print-outline" />}
-          >
-            Print
-          </Button>
+              onClick={() => setOpen(true)}
+              variant="contained"
+              color="inherit"
+              startIcon={<Iconify icon="material-symbols:print-outline" />}
+            >
+              Print
+            </Button>
           );
         }}
         content={() => componentRef.current}
@@ -72,7 +81,9 @@ const Receipt = () => {
                   Thank you for your purchase
                 </Typography>
 
+
                 <Grid item xs={12} md={4}>
+                  <Typography variant="body1">B & M Store</Typography>
                   <Typography variant="body1">{receiptData.displayName}</Typography>
                   <Typography variant="body1">
                     Receipt

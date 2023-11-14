@@ -21,7 +21,7 @@ import { useState } from 'react';
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard({ product }) {
-  const { id, description, imageUrl, price, quantity, productName } = product;
+  const { id, description, imageUrl, price, stock, productName } = product;
 
   const [open, setOpen] = useState(false)
 
@@ -81,7 +81,7 @@ export default function ShopProductCard({ product }) {
           color: 'text.disabled'
         }}
       >
-        {quantity} stock
+        {stock} stock
       </Typography>
       
       
