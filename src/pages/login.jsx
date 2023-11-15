@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | NDWBIS </title>
+        <title> Login | POS B & M Store </title>
       </Helmet>
 
       <LoginView />

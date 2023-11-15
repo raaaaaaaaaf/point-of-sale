@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import { fCurrency } from 'src/utils/format-number';
 
 import Label from 'src/components/label';
-import { ColorPreview } from 'src/components/color-utils';
 import { IconButton } from '@mui/material';
 import Iconify from 'src/components/iconify';
 import { deleteDoc, doc } from 'firebase/firestore';

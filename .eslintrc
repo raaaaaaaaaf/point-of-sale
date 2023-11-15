@@ -74,6 +74,8 @@
     "consistent-return": "off",
     "prefer-template": "off",
     "no-shadow": "off",
+    "use-isnan": "off",
+    "operator-assignment": "off",
     "object-shorthand": "off",
     "jsx-a11y/control-has-associated-label": 0,
     "jsx-a11y/label-has-associated-control": "off",

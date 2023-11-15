@@ -5,12 +5,11 @@ import {
   Container,
   Divider,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { db } from 'src/firebase/firebaseConfig';
 import { fCurrency } from 'src/utils/format-number';

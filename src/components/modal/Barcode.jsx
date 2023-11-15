@@ -1,10 +1,10 @@
-import { Button, Dialog } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react'
+import { Dialog } from '@mui/material';
+import React, {  useEffect, useState } from 'react'
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import './barcode.css';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
-import { AddtoCartContext } from 'src/context/AddtoCartContext';
+
 
 const Barcode = ({ open, onClose, cart, setCart }) => {
 

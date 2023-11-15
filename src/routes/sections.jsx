@@ -6,6 +6,7 @@ import { AuthContext } from 'src/context/AuthContext';
 
 import DashboardLayout from 'src/layouts/dashboard';
 import CartPage from 'src/pages/cart';
+import OrderPage from 'src/pages/order';
 import RegisterPage from 'src/pages/register';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -60,11 +61,11 @@ export default function Router() {
       children: [
         { element:<ProtectedRoute><IndexPage /></ProtectedRoute> , index: true },
         { path: 'app', element: <ProtectedRoute><IndexPage /></ProtectedRoute>  },
-        { path: 'user', element: <ProtectedRoute><UserPage /></ProtectedRoute>  },
         { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
-        { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute> },
         { path: 'cart', element: <ProtectedRoute><CartPage /></ProtectedRoute> },
         { path: 'cart/receipt/:id', element: <ProtectedRoute><Receipt /></ProtectedRoute> },
+        { path: 'order', element: <ProtectedRoute><OrderPage /></ProtectedRoute> },
+        { path: 'order/receipt/:id', element: <ProtectedRoute><Receipt /></ProtectedRoute> },
       ],
     },
     {

@@ -6,7 +6,7 @@ const CartPage = () => {
   return (
     <>
     <Helmet>
-      <title> Cart </title>
+      <title> POS B & M Store </title>
     </Helmet>
 
     <CartView />

@@ -8,10 +8,12 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
 import { fCurrency } from 'src/utils/format-number';
+import Loader from 'src/components/loader/Loader';
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const [loading, setLoading] = useState(true);
   const [sales, setSales] = useState([]);
   const [todayOrders, setTodayOrders] = useState('');
   const [totalOrders, setTotalOrders] = useState('');
@@ -90,12 +92,16 @@ export default function AppView() {
         setTodayOrders(todaySnap.docs.length);
         setTotalSales(totalSales);
         setSales(data);
+
+        setLoading(false);
       } catch (err) {
         console.error(err);
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
+
   const items = sales.map((entry) => entry.items).flat();
 
   // Creating a map to accumulate quantities for each product
@@ -122,79 +128,81 @@ export default function AppView() {
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
-      POS of B & M Store
+        POS of B & M Store
       </Typography>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Grid container spacing={3}>
+          <Grid xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Today's Orders"
+              total={todayOrders}
+              color="success"
+              icon={<img alt="icon" src="/assets/icon/briefcase.png" />}
+            />
+          </Grid>
 
-      <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Today's Orders"
-            total={todayOrders}
-            color="success"
-            icon={<img alt="icon" src="/assets/icon/briefcase.png" />}
-          />
+          <Grid xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Total Orders"
+              total={totalOrders}
+              color="info"
+              icon={<img alt="icon" src="/assets/icon/strategic-plan.png" />}
+            />
+          </Grid>
+
+          <Grid xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Today's Sales"
+              total={`₱ ${fCurrency(today)}`}
+              color="warning"
+              icon={<img alt="icon" src="/assets/icon/coins.png" />}
+            />
+          </Grid>
+
+          <Grid xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Total Sales"
+              total={`₱ ${fCurrency(totalSales)}`}
+              color="error"
+              icon={<img alt="icon" src="/assets/icon/money.png" />}
+            />
+          </Grid>
+
+          <Grid xs={12} md={6} lg={8}>
+            <AppWebsiteVisits
+              title="Last 7 Days Sales"
+              subheader="In Peso"
+              chart={{
+                labels: [
+                  'Today',
+                  'Yesterday',
+                  'Last 3 Days',
+                  'Last 4-7 Days', // A range that includes the last 7 days
+                ],
+                series: [
+                  {
+                    name: 'Sales',
+                    type: 'column',
+                    fill: 'solid',
+                    data: [`${today}`, `${yesterday}`, `${threeDays}`, `${sevenDays}`],
+                  },
+                ],
+              }}
+            />
+          </Grid>
+
+          <Grid xs={12} md={6} lg={4}>
+            <AppCurrentVisits
+              title="Sale by Products"
+              chart={{
+                series: seriesData,
+              }}
+            />
+          </Grid>
         </Grid>
-
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Total Orders"
-            total={totalOrders}
-            color="info"
-            icon={<img alt="icon" src="/assets/icon/strategic-plan.png" />}
-          />
-        </Grid>
-
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Today's Sales"
-            total={`₱ ${fCurrency(today)}`}
-            color="warning"
-            icon={<img alt="icon" src="/assets/icon/coins.png" />}
-          />
-        </Grid>
-
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Total Sales"
-            total={`₱ ${fCurrency(totalSales)}`}
-            color="error"
-            icon={<img alt="icon" src="/assets/icon/money.png" />}
-          />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
-          <AppWebsiteVisits
-            title="Last 7 Days Sales"
-            subheader=""
-            chart={{
-              labels: [
-                'Today',
-                'Yesterday',
-                'Last 3 Days',
-                'Last 4-7 Days', // A range that includes the last 7 days
-              ],
-              series: [
-                {
-                  name: 'Sales',
-                  type: 'column',
-                  fill: 'solid',
-                  data: [`${today}`, `${yesterday}`, `${threeDays}`, `${sevenDays}`],
-                },
-              ],
-            }}
-          />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={4}>
-          <AppCurrentVisits
-            title="Sale by Products"
-            chart={{
-              series: seriesData,
-            }}
-          />
-        </Grid>
-
-      </Grid>
+      )}
     </Container>
   );
 }

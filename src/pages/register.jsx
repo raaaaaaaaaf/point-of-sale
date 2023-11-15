@@ -8,7 +8,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title> Register | NDWBIS </title>
+        <title> Register | POS B & M Store </title>
       </Helmet>
 
       <RegisterView />
