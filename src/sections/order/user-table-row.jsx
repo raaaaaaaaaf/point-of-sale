@@ -41,7 +41,7 @@ export default function UserTableRow({ selected, name, avatarUrl, items, totalPr
   }
 
   return (
-    <>
+
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell padding="checkbox">
           
@@ -75,8 +75,6 @@ export default function UserTableRow({ selected, name, avatarUrl, items, totalPr
           </IconButton>
         </TableCell>
       </TableRow>
-
-    </>
   );
 }
 

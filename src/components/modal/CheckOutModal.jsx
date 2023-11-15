@@ -34,12 +34,12 @@ const CheckOutModal = ({ isOpen, onClose, items }) => {
     const newTotal = items.reduce((acc, item) => acc + parseFloat(item.subtotal), 0);
     return newTotal;
   };
-  
 
   const calculateChange = () => {
     const cashValue = parseFloat(cash);
     const totalValue = parseFloat(total);
-
+    
+    /* eslint-disable no-restricted-globals */
     if (!isNaN(cashValue) && !isNaN(totalValue)) {
       const calculatedChange = cashValue - totalValue;
       setChange(calculatedChange);
@@ -56,9 +56,9 @@ const CheckOutModal = ({ isOpen, onClose, items }) => {
 
   // Call calculateTotal once, when component mounts or when items change
   useEffect(() => {
-    console.log("Items:", items);
+    console.log('Items:', items);
     const newTotal = calculateTotal();
-    console.log("New Total:", newTotal);
+    console.log('New Total:', newTotal);
     setTotal(newTotal);
   }, [items]);
 
@@ -109,9 +109,9 @@ const CheckOutModal = ({ isOpen, onClose, items }) => {
       });
 
       await Promise.all(updatePromises);
-      
-      router.push(`receipt/${docId}`)
-      
+
+      router.push(`receipt/${docId}`);
+
       toast.success('Order Success', {
         position: 'top-right',
         autoClose: 3000,

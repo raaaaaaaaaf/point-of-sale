@@ -106,6 +106,7 @@ export default function AppView() {
 
   // Creating a map to accumulate quantities for each product
   const productQuantitiesMap = items.reduce((acc, item) => {
+    /* eslint-disable prefer-destructuring */
     const productName = item.productName;
     const quantity = parseInt(item.quantity, 10);
 

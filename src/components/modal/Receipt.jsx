@@ -58,7 +58,6 @@ const Receipt = () => {
           // to the root node of the returned component as it will be overwritten.
           return (
             <Button
-              onClick={() => setOpen(true)}
               variant="contained"
               color="inherit"
               startIcon={<Iconify icon="material-symbols:print-outline" />}
