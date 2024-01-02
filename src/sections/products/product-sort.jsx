@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
@@ -7,18 +7,26 @@ import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
+import { AddtoCartContext } from 'src/context/AddtoCartContext';
 
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
+  { value: null, label: 'All Products' },
+  { value: 'Food and Drinks', label: 'Food and Drinks' },
+  { value: 'Cleaning and Personal Health', label: 'Cleaning and Personal Health' },
+  { value: 'School and Office Supplies', label: 'School and Office Supplies' },
+  { value: 'Cigarettes and Tobacco', label: 'Cigarettes and Tobacco' },
+  { value: 'Household Items', label: 'Household Items' },
+  { value: 'Kitchen Supplies', label: 'Kitchen Supplies' },
+  { value: 'Snacks and Sweets', label: 'Snacks and Sweets' },
+  { value: 'Beverages', label: 'Beverages' },
 ];
 
 export default function ShopProductSort() {
   const [open, setOpen] = useState(null);
+
+  const { category, setCategory } = useContext(AddtoCartContext);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -26,6 +34,11 @@ export default function ShopProductSort() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleSortOptionClick = (value) => {
+    setCategory(value);
+    handleClose();
   };
 
   return (
@@ -36,10 +49,16 @@ export default function ShopProductSort() {
         onClick={handleOpen}
         endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
-        Sort By:&nbsp;
-        <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          Newest
-        </Typography>
+        Category:&nbsp;
+        {category ? (
+          <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
+            {category}
+          </Typography>
+        ) : (
+          <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
+            Select Category
+          </Typography>
+        )}
       </Button>
 
       <Menu
@@ -59,7 +78,11 @@ export default function ShopProductSort() {
         }}
       >
         {SORT_OPTIONS.map((option) => (
-          <MenuItem key={option.value} selected={option.value === 'newest'} onClick={handleClose}>
+          <MenuItem
+            key={option.value}
+            selected={option.value === category}
+            onClick={() => handleSortOptionClick(option.value)}
+          >
             {option.label}
           </MenuItem>
         ))}

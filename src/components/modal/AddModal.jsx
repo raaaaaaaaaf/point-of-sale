@@ -5,8 +5,12 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
   Grid,
   Input,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from '@mui/material';
@@ -19,9 +23,10 @@ import { toast } from 'react-toastify';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 const AddModal = ({ open, onClose }) => {
-  const [barcodeData, setBarcodeData] = useState('Not Found');
+  const [barcodeData, setBarcodeData] = useState('');
   const [isScannerOpen, setIsScannerOpen] = useState(true);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [category, setCategory] = useState('');
 
   const [formData, setFormData] = useState({
     productName: '',
@@ -38,12 +43,16 @@ const AddModal = ({ open, onClose }) => {
     }));
   };
 
+  const handleChange = (event) => {
+    setCategory(event.target.value);
+  };
+
   const handleScan = (err, result) => {
     if (result) {
       setBarcodeData(result.text);
       setIsScannerOpen(false); // Close the scanner after successful scan
     } else {
-      setBarcodeData('Not Found');
+      setBarcodeData('');
     }
   };
 
@@ -54,12 +63,29 @@ const AddModal = ({ open, onClose }) => {
 
   const handleAdd = async () => {
     try {
+      if (
+        !formData.productName ||
+        !formData.description ||
+        !formData.price ||
+        !formData.stock ||
+        !barcodeData ||
+        !uploadedImage ||
+        !category
+      ) {
+        toast.error('Please fill out all fields.', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+        });
+        return; // Exit the function if validation fails
+      }
       // Upload the image to Firebase Storage
       if (uploadedImage) {
         const storageRef = ref(storage, 'images/' + uploadedImage.name);
         const uploadTask = uploadBytesResumable(storageRef, uploadedImage);
 
-        uploadTask.on('state_changed',
+        uploadTask.on(
+          'state_changed',
           (snapshot) => {
             // Handle upload state changes if needed
           },
@@ -78,6 +104,7 @@ const AddModal = ({ open, onClose }) => {
               price: formData.price,
               productName: formData.productName,
               stock: formData.stock,
+              category: category,
               imageUrl: downloadURL, // Save the download URL
             };
             const docRef = await addDoc(dataRef, newProduct);
@@ -156,6 +183,31 @@ const AddModal = ({ open, onClose }) => {
                 type="number"
               />
             </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={category}
+                  label="Age"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={'Food and Drinks'}>Food and Drinks</MenuItem>
+                  <MenuItem value={'Cleaning and Personal Health'}>
+                    Cleaning and Personal Health
+                  </MenuItem>
+                  <MenuItem value={'School and Office Supplies'}>
+                    School and Office Supplies
+                  </MenuItem>
+                  <MenuItem value={'Cigarettes and Tobacco'}>Cigarettes and Tobacco</MenuItem>
+                  <MenuItem value={'Household Items'}>Household Items</MenuItem>
+                  <MenuItem value={'Kitchen Supplies'}>Kitchen Supplies</MenuItem>
+                  <MenuItem value={'Snacks and Sweets'}>Snacks and Sweets</MenuItem>
+                  <MenuItem value={'Beverages'}>Beverages</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <Divider
             style={{
@@ -205,7 +257,12 @@ const AddModal = ({ open, onClose }) => {
             <BarcodeScannerComponent width="100%" height="100%" onUpdate={handleScan} />
           ) : null}
         </div>
-        {barcodeData && <Typography variant="body1">Barcode Data: {barcodeData}</Typography>}
+
+        {barcodeData ? (
+          <Typography variant="body1">Barcode Data: {barcodeData}</Typography>
+        ) : (
+          <Typography variant="body1">Barcode Data: Not Found</Typography>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
