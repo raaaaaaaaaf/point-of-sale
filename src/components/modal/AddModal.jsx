@@ -193,18 +193,24 @@ const AddModal = ({ open, onClose }) => {
                   label="Age"
                   onChange={handleChange}
                 >
-                  <MenuItem value={'Food and Drinks'}>Food and Drinks</MenuItem>
                   <MenuItem value={'Cleaning and Personal Health'}>
                     Cleaning and Personal Health
                   </MenuItem>
                   <MenuItem value={'School and Office Supplies'}>
                     School and Office Supplies
                   </MenuItem>
-                  <MenuItem value={'Cigarettes and Tobacco'}>Cigarettes and Tobacco</MenuItem>
+
                   <MenuItem value={'Household Items'}>Household Items</MenuItem>
-                  <MenuItem value={'Kitchen Supplies'}>Kitchen Supplies</MenuItem>
-                  <MenuItem value={'Snacks and Sweets'}>Snacks and Sweets</MenuItem>
+                  <MenuItem value={'Snacks and sweets'}>Snacks and sweets</MenuItem>
+
                   <MenuItem value={'Beverages'}>Beverages</MenuItem>
+                  <MenuItem value={'Instant Noodles'}>Instant Noodles</MenuItem>
+                  <MenuItem value={'Canned Goods'}>Canned Goods</MenuItem>
+                  <MenuItem value={'Biscuits and Cookies'}>Biscuits and Cookies</MenuItem>
+                  <MenuItem value={'Condiments'}>Condiments</MenuItem>
+                  <MenuItem value={'Toiletries'}>Toiletries</MenuItem>
+                  <MenuItem value={'Flour '}>Flour </MenuItem>
+                  <MenuItem value={'Rice'}>Rice</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

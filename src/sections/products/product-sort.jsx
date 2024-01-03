@@ -13,14 +13,18 @@ import { AddtoCartContext } from 'src/context/AddtoCartContext';
 
 const SORT_OPTIONS = [
   { value: null, label: 'All Products' },
-  { value: 'Food and Drinks', label: 'Food and Drinks' },
-  { value: 'Cleaning and Personal Health', label: 'Cleaning and Personal Health' },
-  { value: 'School and Office Supplies', label: 'School and Office Supplies' },
-  { value: 'Cigarettes and Tobacco', label: 'Cigarettes and Tobacco' },
-  { value: 'Household Items', label: 'Household Items' },
-  { value: 'Kitchen Supplies', label: 'Kitchen Supplies' },
-  { value: 'Snacks and Sweets', label: 'Snacks and Sweets' },
+  { value: 'Cleaning and personal health', label: 'Cleaning and personal health' },
+  { value: 'School and office supplies', label: 'School and office supplies' },
+  { value: 'Household items', label: 'Household items' },
+  { value: 'Snacks and sweets', label: 'Snacks and sweets' },
   { value: 'Beverages', label: 'Beverages' },
+  { value: 'Instant Noodles', label: 'Instant Noodles' },
+  { value: 'Canned Goods', label: 'Canned Goods' },
+  { value: 'Biscuits and Cookies', label: 'Biscuits and Cookies' },
+  { value: 'Condiments', label: 'Condiments' },
+  { value: 'Toiletries', label: 'Toiletries' },
+  { value: 'Flour', label: 'Flour' },
+  { value: 'Rice', label: 'Rice' },
 ];
 
 export default function ShopProductSort() {
