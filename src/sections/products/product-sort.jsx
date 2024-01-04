@@ -13,9 +13,9 @@ import { AddtoCartContext } from 'src/context/AddtoCartContext';
 
 const SORT_OPTIONS = [
   { value: null, label: 'All Products' },
-  { value: 'Cleaning and personal health', label: 'Cleaning and personal health' },
-  { value: 'School and office supplies', label: 'School and office supplies' },
-  { value: 'Household items', label: 'Household items' },
+  { value: 'Cleaning and Personal Health', label: 'Cleaning and Personal Health' },
+  { value: 'School and Office Supplies', label: 'School and Office Supplies' },
+  { value: 'Household Items', label: 'Household Items' },
   { value: 'Snacks and sweets', label: 'Snacks and sweets' },
   { value: 'Beverages', label: 'Beverages' },
   { value: 'Instant Noodles', label: 'Instant Noodles' },
