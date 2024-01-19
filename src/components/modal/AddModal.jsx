@@ -15,15 +15,16 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import './barcode.css';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, storage } from 'src/firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import useScanDetection from 'use-scan-detection';
+
 
 const AddModal = ({ open, onClose }) => {
-  const [barcodeData, setBarcodeData] = useState('');
+  const [barcodeData, setBarcodeData] = useState('No Barcode Scanned');
   const [isScannerOpen, setIsScannerOpen] = useState(true);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [category, setCategory] = useState('');
@@ -47,14 +48,19 @@ const AddModal = ({ open, onClose }) => {
     setCategory(event.target.value);
   };
 
-  const handleScan = (err, result) => {
-    if (result) {
-      setBarcodeData(result.text);
-      setIsScannerOpen(false); // Close the scanner after successful scan
-    } else {
-      setBarcodeData('');
-    }
-  };
+  // const handleScan = (err, result) => {
+  //   if (result) {
+  //     setBarcodeData(result.text);
+  //     setIsScannerOpen(false); // Close the scanner after successful scan
+  //   } else {
+  //     setBarcodeData('');
+  //   }
+  // };
+
+  useScanDetection({
+    onComplete: setBarcodeData,
+    minLength: 3, // EAN13
+  });
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -79,6 +85,19 @@ const AddModal = ({ open, onClose }) => {
         });
         return; // Exit the function if validation fails
       }
+      // Explicitly convert price and stock to numbers
+      const price = parseFloat(formData.price);
+      const stock = parseInt(formData.stock, 10);
+
+
+      if (Number.isNaN(price) || Number.isNaN(stock)) {
+        toast.error('Please enter valid price and stock values.', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+        });
+        return;
+      }
       // Upload the image to Firebase Storage
       if (uploadedImage) {
         const storageRef = ref(storage, 'images/' + uploadedImage.name);
@@ -101,9 +120,9 @@ const AddModal = ({ open, onClose }) => {
             const newProduct = {
               barcodeData: barcodeData,
               description: formData.description,
-              price: formData.price,
+              price: price,
               productName: formData.productName,
-              stock: formData.stock,
+              stock: stock,
               category: category,
               imageUrl: downloadURL, // Save the download URL
             };
@@ -257,18 +276,17 @@ const AddModal = ({ open, onClose }) => {
             margin: '16px 0', // Add margin to the top and bottom
           }}
         />
-        <Typography variant="h6">Scan Barcode: </Typography>
+        {/* <Typography variant="h6">Scan Barcode: </Typography>
         <div className="scanner-container">
           {isScannerOpen ? (
             <BarcodeScannerComponent width="100%" height="100%" onUpdate={handleScan} />
           ) : null}
-        </div>
+        </div> */}
 
-        {barcodeData ? (
-          <Typography variant="body1">Barcode Data: {barcodeData}</Typography>
-        ) : (
-          <Typography variant="body1">Barcode Data: Not Found</Typography>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <Typography variant="body1">Barcode Data: </Typography>
+          <input value={barcodeData} type="text" />
+        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">

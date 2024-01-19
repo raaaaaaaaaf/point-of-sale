@@ -1,0 +1,30 @@
+@media print {
+  @page {
+    size: 58mm 150mm;
+    margin-bottom: 0; /* Set the bottom margin to zero */
+  }
+
+  /* Add additional styles for print view here */
+  body {
+    font-size: 10pt; /* Adjust font size for better readability on paper */
+  }
+
+  /* You can add more styles as needed for your specific layout */
+  .print-header {
+    /* Styles for the header section in print view */
+    text-align: center;
+    font-size: 14pt;
+    margin-bottom: 10mm;
+  }
+
+  .print-item {
+    /* Styles for each item in the receipt */
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+  }
+
+  .print-total {
+    /* Styles for the total section in print view */
+    font-weight: bold;
+  }
+}
